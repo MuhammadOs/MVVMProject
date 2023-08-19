@@ -8,17 +8,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.myproject.Presentation.NavigationHost
-import com.example.myproject.Presentation.ViewModels.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main(viewModel: LoginViewModel) {
+fun Main() {
     val navController = rememberNavController()
-    Scaffold {paddingValues ->
-        Column (
+    Scaffold { paddingValues ->
+        Column(
             modifier = Modifier.padding(paddingValues)
-        ){
-            NavigationHost(navController = navController, viewModel)
+        ) {
+            NavigationHost(navController = navController)
         }
     }
 }

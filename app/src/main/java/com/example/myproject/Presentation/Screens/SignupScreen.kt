@@ -1,11 +1,8 @@
 package com.example.myproject.Presentation.Screens
 
-import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,17 +22,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.myproject.Data.appClass
 import com.example.myproject.Presentation.CustomComponents.MyLoginTextField
-import com.example.myproject.Presentation.ViewModels.LoginViewModel
+import com.example.myproject.Presentation.ViewModels.LoginAndSignupViewModel
 import com.example.myproject.R
 
 @Composable
-fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
+fun SignupScreen(navController: NavHostController, viewModel: LoginAndSignupViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
             text = AnnotatedString("Already have an account? Login"),
@@ -61,7 +57,7 @@ fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "SignUp",
+            text = "Signup",
             Modifier.align(Alignment.Start),
             style = TextStyle(fontSize = 40.sp),
         )
@@ -74,7 +70,7 @@ fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(50.dp))
         MyLoginTextField(
             name = viewModel.signupUsername.value,
-            onChange = { newValue -> viewModel.signupUsername.value = newValue},
+            onChange = { newValue -> viewModel.signupUsername.value = newValue },
             label = "Username",
             visualTransformation = VisualTransformation.None,
             keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -83,11 +79,20 @@ fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(20.dp))
         MyLoginTextField(
             name = viewModel.signupEmail.value,
-            onChange = { newValue -> viewModel.signupEmail.value = newValue},
+            onChange = { newValue -> viewModel.signupEmail.value = newValue },
             label = "Email",
             visualTransformation = VisualTransformation.None,
             keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Email),
             LeadingIcon = R.drawable.baseline_mail_24
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        MyLoginTextField(
+            name = viewModel.signupAge.value,
+            onChange = { newValue -> viewModel.signupAge.value = newValue },
+            label = "Age",
+            visualTransformation = VisualTransformation.None,
+            keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Number),
+            LeadingIcon = R.drawable.baseline_person_24
         )
         Spacer(modifier = Modifier.height(20.dp))
         MyLoginTextField(
@@ -98,29 +103,31 @@ fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
             LeadingIcon = R.drawable.baseline_password_24,
             TrailingIcon = viewModel.passeye.value,
             TrailingOnClick = {
-                viewModel.passeye.value = if (viewModel.passeye.value == R.drawable.baseline_lock_24) {
-                    R.drawable.baseline_lock_open_24
-                } else {
-                    R.drawable.baseline_lock_24
-                }
+                viewModel.passeye.value =
+                    if (viewModel.passeye.value == R.drawable.baseline_lock_24) {
+                        R.drawable.baseline_lock_open_24
+                    } else {
+                        R.drawable.baseline_lock_24
+                    }
                 viewModel.showPassword.value = !viewModel.showPassword.value
             },
             visualTransformation = if (viewModel.showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
         )
         Spacer(modifier = Modifier.height(20.dp))
         MyLoginTextField(
-            name = viewModel.signupConfirmpass.value,
-            onChange = { newValue -> viewModel.signupConfirmpass.value = newValue },
+            name = viewModel.signupConfirmPass.value,
+            onChange = { newValue -> viewModel.signupConfirmPass.value = newValue },
             label = "Confirm Password",
             keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Password),
             LeadingIcon = R.drawable.baseline_password_24,
             TrailingIcon = viewModel.passeye2.value,
             TrailingOnClick = {
-                viewModel.passeye2.value = if (viewModel.passeye2.value == R.drawable.baseline_lock_24) {
-                    R.drawable.baseline_lock_open_24
-                } else {
-                    R.drawable.baseline_lock_24
-                }
+                viewModel.passeye2.value =
+                    if (viewModel.passeye2.value == R.drawable.baseline_lock_24) {
+                        R.drawable.baseline_lock_open_24
+                    } else {
+                        R.drawable.baseline_lock_24
+                    }
                 viewModel.showPassword2.value = !viewModel.showPassword2.value
             },
             visualTransformation = if (viewModel.showPassword2.value) VisualTransformation.None else PasswordVisualTransformation(),
@@ -129,11 +136,22 @@ fun SignupScreen(navController: NavHostController, viewModel: LoginViewModel) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+            modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)
+        ) {
             Button(
                 //enabled = password.isNotEmpty() && username.isNotEmpty(),
                 onClick = {
                     viewModel.clicked.value = true
+                    viewModel.signupBtnClickable(
+                        navController,
+                        appClass.appContext,
+                        viewModel.createUser(
+                            viewModel.signupUsername.value,
+                            viewModel.signupEmail.value,
+                            viewModel.signupPassword.value,
+                            viewModel.signupAge.value
+                        )
+                    )
                 },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier

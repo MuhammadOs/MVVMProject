@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+
 @Dao
 interface User_DAO {
     @Query("SELECT * FROM User_table")
@@ -16,6 +17,12 @@ interface User_DAO {
 
     @Query("SELECT * FROM User_table WHERE id = :id")
     fun getUserByID(id: Int): User
+
+    @Query("SELECT * FROM User_table WHERE username = :username")
+    fun getUserByUserName(username: String) : Boolean
+
+    @Query("SELECT * FROM User_table WHERE password = :password")
+    fun getUserByPassword(password: String) : Boolean
 
     @Query("SELECT * FROM User_table WHERE age < :minAge")
     fun getUserByMinAge(minAge: Int): User

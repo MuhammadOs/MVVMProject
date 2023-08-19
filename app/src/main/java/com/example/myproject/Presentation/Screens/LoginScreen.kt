@@ -1,6 +1,5 @@
 package com.example.myproject.Presentation.Screens
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,13 +30,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.myproject.Data.appContext
+import com.example.myproject.Data.appClass
 import com.example.myproject.Presentation.CustomComponents.MyLoginTextField
-import com.example.myproject.Presentation.ViewModels.LoginViewModel
+import com.example.myproject.Presentation.ViewModels.LoginAndSignupViewModel
 import com.example.myproject.R
 
 @Composable
-fun LoginScreen(navController: NavHostController, viewModel : LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun LoginScreen(
+    navController: NavHostController,
+    viewModel: LoginAndSignupViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     //val loginViewModel : LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
@@ -77,7 +79,7 @@ fun LoginScreen(navController: NavHostController, viewModel : LoginViewModel = a
         Spacer(modifier = Modifier.height(50.dp))
         MyLoginTextField(
             name = viewModel.username.value,
-            onChange = { newValue -> viewModel.username.value = newValue},
+            onChange = { newValue -> viewModel.username.value = newValue },
             label = "Username",
             visualTransformation = VisualTransformation.None,
             keyboardOption = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -92,17 +94,18 @@ fun LoginScreen(navController: NavHostController, viewModel : LoginViewModel = a
             LeadingIcon = R.drawable.baseline_password_24,
             TrailingIcon = viewModel.passeye.value,
             TrailingOnClick = {
-                viewModel.passeye.value = if (viewModel.passeye.value == R.drawable.baseline_lock_24) {
-                    R.drawable.baseline_lock_open_24
-                } else {
-                    R.drawable.baseline_lock_24
-                }
+                viewModel.passeye.value =
+                    if (viewModel.passeye.value == R.drawable.baseline_lock_24) {
+                        R.drawable.baseline_lock_open_24
+                    } else {
+                        R.drawable.baseline_lock_24
+                    }
                 viewModel.showPassword.value = !viewModel.showPassword.value
             },
             visualTransformation = if (viewModel.showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Row (
+        Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         )
@@ -114,15 +117,15 @@ fun LoginScreen(navController: NavHostController, viewModel : LoginViewModel = a
             Text(text = "Remember me")
         }
         Spacer(modifier = Modifier.height(20.dp))
-        val context = LocalContext.current
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
+            modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)
+        ) {
             Button(
                 onClick = {
                     viewModel.clicked.value = true
-                    viewModel.loginBtnClickable(navController, context)
+                    viewModel.loginBtnClickable(navController, appClass.appContext)
                 },
                 shape = RoundedCornerShape(50.dp),
                 modifier = Modifier
