@@ -3,16 +3,25 @@ package com.example.myproject.Presentation.ViewModels
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.myproject.Data.PreferencesManager
 import com.example.myproject.Data.appClass
 import com.example.myproject.R
 import com.example.myproject.User
 import com.example.myproject.UserDB
 import com.example.myproject.UserRoomDB
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginAndSignupViewModel(private val userDB: UserDB = UserRoomDB()) : ViewModel() {
-    val context = appClass.appContext
+
+
+
+    val sharedpref = PreferencesManager(appClass.appContext)
+
     var showPassword = mutableStateOf(false)
     var showPassword2 = mutableStateOf(false)
     var username = mutableStateOf("")
@@ -26,7 +35,7 @@ class LoginAndSignupViewModel(private val userDB: UserDB = UserRoomDB()) : ViewM
     var signupConfirmPass = mutableStateOf("")
     var clicked = mutableStateOf(false)
     var checked = mutableStateOf(false)
-
+    val isLogged = mutableStateOf(false)
 
     fun createUser(userName: String, email: String, password: String, age: String): User {
         val user = User(username = userName, gmail = email, password = password, age = age)
@@ -58,13 +67,16 @@ class LoginAndSignupViewModel(private val userDB: UserDB = UserRoomDB()) : ViewM
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             else -> {
                 Toast.makeText(
                     context,
                     "Logged in Successfully!",
                     Toast.LENGTH_LONG
                 ).show()
-                navController.navigate("SignupScreen")
+                isLogged.value = true
+                sharedpref.saveData("MyPrefs", true)
+                navController.navigate("HomeScreen")
             }
         }
     }
@@ -110,6 +122,7 @@ class LoginAndSignupViewModel(private val userDB: UserDB = UserRoomDB()) : ViewM
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             (userDB.getUserByUserName(signupUsername.value)) -> {
                 Toast.makeText(
                     context,
@@ -117,6 +130,7 @@ class LoginAndSignupViewModel(private val userDB: UserDB = UserRoomDB()) : ViewM
                     Toast.LENGTH_LONG
                 ).show()
             }
+
             else -> {
                 Toast.makeText(
                     context,

@@ -80,7 +80,6 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     dependencies {
         val nav_version = "2.7.0"
-
         implementation("androidx.navigation:navigation-compose:$nav_version")
     }
     val room_version = "2.5.2"
@@ -90,4 +89,5 @@ dependencies {
     val lifecycle_version = "2.6.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
