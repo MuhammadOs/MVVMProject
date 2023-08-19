@@ -19,7 +19,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,13 +31,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.myproject.Data.appClass
 import com.example.myproject.Presentation.CustomComponents.MyLoginTextField
-import com.example.myproject.Presentation.ViewModels.LoginAndSignupViewModel
+import com.example.myproject.Presentation.ViewModels.MainViewModel
 import com.example.myproject.R
 
 @Composable
 fun LoginScreen(
     navController: NavHostController,
-    viewModel: LoginAndSignupViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
     //val loginViewModel : LoginViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     Box(modifier = Modifier.fillMaxSize()) {

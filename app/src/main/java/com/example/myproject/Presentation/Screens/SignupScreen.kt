@@ -28,11 +28,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.myproject.Data.appClass
 import com.example.myproject.Presentation.CustomComponents.MyLoginTextField
-import com.example.myproject.Presentation.ViewModels.LoginAndSignupViewModel
+import com.example.myproject.Presentation.ViewModels.MainViewModel
 import com.example.myproject.R
 
 @Composable
-fun SignupScreen(navController: NavHostController, viewModel: LoginAndSignupViewModel) {
+fun SignupScreen(navController: NavHostController, viewModel: MainViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         ClickableText(
             text = AnnotatedString("Already have an account? Login"),

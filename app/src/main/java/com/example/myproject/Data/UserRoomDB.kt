@@ -8,7 +8,6 @@ class UserRoomDB : UserDB{
     val database = Room.databaseBuilder(
         appClass.appContext , MyDatabase::class.java, "Mydatabase"
     ).allowMainThreadQueries().build()
-
     val dao = database.userDao()
 
     override fun getAllUsers(): List<User> {
